@@ -1,0 +1,14 @@
+.dub
+docs.json
+__dummy.html
+docs/
+turbojpeg-example.so
+turbojpeg-example.dylib
+turbojpeg-example.dll
+turbojpeg-example.a
+turbojpeg-example.lib
+turbojpeg-example-test-*
+*.exe
+*.o
+*.obj
+*.lst
