@@ -1,6 +1,6 @@
 /+ dub.sdl:
-    dependency "dbuild" version="*"
-    dependency "pkg-config" version="*"
+    dependency "dbuild" version="~>0.0.1"
+    dependency "pkg-config" version="~>0.0.1"
 +/
 
 
@@ -111,7 +111,12 @@ void main()
             .msvc()
             .invoke();
 
-        foreach (ip; jlib.includePaths.chain(tjlib.includePaths)) {
+        string[] systemPaths;
+        version(Posix) {
+            systemPaths = [ "/usr/include" ];
+        }
+
+        foreach (ip; systemPaths.chain(jlib.includePaths.chain(tjlib.includePaths))) {
             const path = ip.buildPath("jconfig.h");
             if (path.exists()) {
                 stdout.writefln("found %s", path);
