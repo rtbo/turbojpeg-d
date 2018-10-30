@@ -146,12 +146,20 @@ void main()
             "-DWITH_JPEG7=ON", "-DWITH_JPEG8=ON"
         ];
         auto cmake = CMake.create(null, cmakeOptions).buildSystem();
+        version(Windows) {
+            enum jpegTarget = "jpeg-static";
+            enum tjTarget = "turbojpeg-static";
+        }
+        else {
+            enum jpegTarget = "jpeg";
+            enum tjTarget = "turbojpeg";
+        }
         auto res = Build
             .dubWorkDir()
             .src(src)
             .release()
-            .target(libTarget("jpeg"))
-            .target(libTarget("turbojpeg"))
+            .target(libTarget(jpegTarget))
+            .target(libTarget(tjTarget))
             .build(cmake);
 
         const possibleJConfigs = [
@@ -166,7 +174,7 @@ void main()
             break;
         }
         genLinkerFile(only(
-            res.artifact("jpeg"), res.artifact("turbojpeg")
+            res.artifact(jpegTarget), res.artifact(tjTarget)
         ));
     }
     if (!foundJConf) {
